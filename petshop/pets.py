@@ -24,7 +24,7 @@ def search(field, value):
     if field == 'tag' :
         cursor.execute("select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tag t, tags_pets tp where t.name = ? and t.id = tp.tag and p.id = tp.pet and p.species = s.id ",[value])
     pets = cursor.fetchall()
-    return render_template('search.html', pets = pets, field = field , value = value , order = 'desc' if order =='desc' else 'asc')
+    return render_template('search.html', pets = pets, field = field , value = value , order = 'asc' )
 
 @bp.route("/")
 def dashboard():
