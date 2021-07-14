@@ -21,9 +21,10 @@ def search(field, value):
    											 # TBD DONE
     conn = db.get_db()
     cursor = conn.cursor()
-    cursor.execute(f"select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tag t, tags_pets tp where t.name = ? and t.id = tp.tag and tp.pet = p.id ",(value))
+    if field == 'tag' :
+        cursor.execute("select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tag t, tags_pets tp where t.name = ? and t.id = tp.tag and tp.pet = p.id ",(value))
     pets = cursor.fetchall()
-    return render_template('search.html', pets = pets)
+    return render_template('search.html', pets = pets, field = field , value = value , order = 'desc' if order =='desc' else 'asc')
 
 @bp.route("/")
 def dashboard():
