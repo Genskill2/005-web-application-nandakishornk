@@ -22,7 +22,7 @@ def search(field, value):
     conn = db.get_db()
     cursor = conn.cursor()
     if field == 'tag' :
-        cursor.execute("select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tag t, tags_pets tp where t.name = ? and t.id = tp.tag and tp.pet = p.id and p.species = s.id ",(value))
+        cursor.execute("select p.id, p.name, p.bought, p.sold, s.name from pet p, animal s, tag t, tags_pets tp where t.name = ? and t.id = tp.tag and p.id = tp.pet and p.species = s.id ",(value))
     pets = cursor.fetchall()
     return render_template('search.html', pets = pets, field = field , value = value , order = 'desc' if order =='desc' else 'asc')
 
@@ -77,10 +77,10 @@ def edit(pid):
                     tags = tags)
         return render_template("editpet.html", **data)
     if request.method == "POST":
-        newdescription = request.form.get('description')
-        sold2 = request.form.get('sold')
-        cursor.execute("update pet set description = ? where id = ?;",(newdescription,pid))
-        if sold2=='sold' :
+        description = request.form.get('description')
+        sold = request.form.get('sold')
+        cursor.execute("update pet set description = ? where id = ?;",(description,pid))
+        if sold=='sold' :
             print("Set")
             now = datetime.date.today()
             datef = now.strftime("%Y-%m-%d")
