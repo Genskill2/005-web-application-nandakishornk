@@ -77,9 +77,9 @@ def edit(pid):
         return render_template("editpet.html", **data)
     if request.method == "POST":
         newdescription = request.form.get('description')
-        sold2 = request.form.get('sold2')
+        sold2 = request.form.get('sold')
         cursor.execute("update pet set description = ? where id = ?;",(newdescription,pid))
-        if sold2=='sold2' :
+        if sold2=='sold' :
             print("Set")
             now = datetime.date.today()
             datef = now.strftime("%Y-%m-%d")
