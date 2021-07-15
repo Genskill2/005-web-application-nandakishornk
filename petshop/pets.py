@@ -80,26 +80,14 @@ def edit(pid):
         description = request.form.get('description')
         sold = request.form.get('sold')
         cursor.execute("update pet set description = ? where id = ?;",(description,pid))
-        if sold=='sold' :
+        if sold :
             print("Set")
             now = datetime.date.today()
             datef = now.strftime("%Y-%m-%d")
             cursor.execute("update pet set sold= ? where id= ?;",(datef,pid))
         conn.commit()
-        cursor.execute("select p.name, p.bought, p.sold, p.description, s.name from pet p, animal s where p.species = s.id and p.id = ?", [pid])
-        pet = cursor.fetchone()
-        cursor.execute("select t.name from tags_pets tp, tag t where tp.pet = ? and tp.tag = t.id", [pid])
-        tags = (x[0] for x in cursor.fetchall())
-        name, bought, sold, description, species = pet
-        data = dict(id = pid,
-                    name = name,
-                    bought = format_date(bought),
-                    sold = format_date(sold),
-                    description = description,                                              #TODO Not being displayed  DONE
-                    species = species,
-                    tags = tags)
         # TODO Handle sold
-        return render_template("petdetail.html", **data)
+        return redirect(url_for('pets.pet_info',pid=pid),302)
         
     
 
